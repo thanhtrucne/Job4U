@@ -1,0 +1,9 @@
+BEGIN;
+CREATE TYPE career_guide_status AS ENUM ('draft','published','hidden');
+CREATE TABLE career_guide_categories (id serial PRIMARY KEY,name varchar(150) UNIQUE NOT NULL,slug varchar(180) UNIQUE NOT NULL,description text,created_at timestamptz DEFAULT now());
+CREATE TABLE career_guides (id serial PRIMARY KEY,title varchar(300) NOT NULL,slug varchar(340) UNIQUE NOT NULL,thumbnail_url text,summary text NOT NULL,content text NOT NULL,category_id integer NOT NULL REFERENCES career_guide_categories(id),author_id integer REFERENCES users(id) ON DELETE SET NULL,author_name varchar(255),tags varchar[] NOT NULL DEFAULT '{}',status career_guide_status NOT NULL DEFAULT 'draft',is_featured boolean NOT NULL DEFAULT false,view_count integer NOT NULL DEFAULT 0,created_at timestamptz DEFAULT now(),updated_at timestamptz);
+CREATE TABLE saved_career_guides (id serial PRIMARY KEY,user_id integer NOT NULL REFERENCES users(id) ON DELETE CASCADE,career_guide_id integer NOT NULL REFERENCES career_guides(id) ON DELETE CASCADE,saved_at timestamptz DEFAULT now(),CONSTRAINT uq_saved_career_guides_user_guide UNIQUE(user_id,career_guide_id));
+CREATE INDEX ix_career_guides_published ON career_guides(status,category_id,created_at DESC);
+INSERT INTO career_guide_categories(name,slug,description) VALUES
+('Định hướng nghề nghiệp','dinh-huong-nghe-nghiep','Khám phá hướng đi phù hợp cho sự nghiệp.'),('Bí kíp tìm việc','bi-kip-tim-viec','CV, phỏng vấn và cách tìm việc hiệu quả.'),('Chế độ lương thưởng','che-do-luong-thuong','Thu nhập, đãi ngộ và quyền lợi.'),('Kiến thức chuyên ngành','kien-thuc-chuyen-nganh','Kiến thức theo lĩnh vực chuyên môn.'),('Hành trang nghề nghiệp','hanh-trang-nghe-nghiep','Kỹ năng và nền tảng phát triển.'),('Thị trường & xu hướng tuyển dụng','thi-truong-va-xu-huong-tuyen-dung','Góc nhìn thị trường lao động.') ON CONFLICT (slug) DO NOTHING;
+COMMIT;

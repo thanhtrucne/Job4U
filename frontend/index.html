@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+  <meta charset="utf-8">
+  <title>Job4U - Trang Tìm Việc Làm Hàng Đầu Việt Nam</title>
+  <meta name="description"
+    content="Tìm kiếm việc làm IT, Backend, Frontend, DevOps từ hàng nghìn công ty hàng đầu Việt Nam.">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+  <!-- Favicon -->
+  <link href="/static/img/favicon.ico" rel="icon">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600&family=Inter:wght@700;800&display=swap"
+    rel="stylesheet">
+
+  <!-- Icons -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+
+  <!-- Libraries -->
+  <link href="/static/lib/animate/animate.min.css" rel="stylesheet">
+  <link href="/static/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+
+  <!-- Bootstrap + Custom -->
+  <link href="/static/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/static/css/style_jobtop.css" rel="stylesheet">
+  <link href="/static/css/site_navbar.css" rel="stylesheet">
+</head>
+
+<body>
+  <div class="container-xxl bg-white p-0">
+
+    <!-- Spinner -->
+    <div id="spinner"
+      class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+      <div class="spinner-border text-primary" style="width:3rem;height:3rem;" role="status">
+        <span class="sr-only">Loading...</span>
+      </div>
+    </div>
+
+    <!-- Shared navbar rendered by site_navbar.js -->
+    <div id="site-navbar"></div>
+
+    <!-- Carousel -->
+    <div class="container-fluid p-0 mb-5">
+      <div id="header-carousel" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-inner">
+          <div class="carousel-item active">
+            <img class="w-100" src="/static/img/img/47.jpg" alt="Banner 1">
+            <div class="carousel-caption d-flex flex-column align-items-center justify-content-center">
+              <div class="p-3" style="max-width:900px">
+                <h5 class="text-white text-uppercase mb-3 animated slideInDown">Tìm việc nhanh chóng</h5>
+                <h1 class="display-1 text-white mb-md-4 animated zoomIn">Việc Làm Trong Mơ</h1>
+                <a href="/static/jobs.html" class="btn btn-primary py-md-3 px-md-5 me-3 animated slideInLeft">Tìm Việc
+                  Ngay</a>
+                <a href="/static/about.html" class="btn btn-secondary py-md-3 px-md-5 animated slideInRight">Về Chúng
+                  Tôi</a>
+              </div>
+            </div>
+          </div>
+          <div class="carousel-item">
+            <img class="w-100" src="/static/img/img/74.jpg" alt="Banner 2">
+            <div class="carousel-caption d-flex flex-column align-items-center justify-content-center">
+              <div class="p-3" style="max-width:900px">
+                <h5 class="text-white text-uppercase mb-3 animated slideInDown">Hàng nghìn cơ hội</h5>
+                <h1 class="display-1 text-white mb-md-4 animated zoomIn">Kết Nối Nhân Tài</h1>
+                <a href="/static/jobs.html" class="btn btn-primary py-md-3 px-md-5 me-3 animated slideInLeft">Xem Việc
+                  Làm</a>
+                <a href="/static/contact.html" class="btn btn-secondary py-md-3 px-md-5 animated slideInRight">Liên
+                  Hệ</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#header-carousel" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#header-carousel" data-bs-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Search -->
+    <div class="container-xxl py-5 wow fadeInUp" data-wow-delay="0.1s">
+      <div class="container">
+        <div class="bg-light rounded p-4 p-sm-5 wow fadeIn" data-wow-delay="0.1s">
+          <div class="row g-3">
+            <div class="col-12 col-sm-8">
+              <div class="input-group">
+                <input id="search-keyword" type="text" class="form-control border-0"
+                  placeholder="Tiêu đề, kỹ năng, công ty...">
+                <select id="search-location" class="form-select border-0" style="max-width:200px">
+                  <option value="">Tất cả địa điểm</option>
+                  <option value="Ha Noi">Hà Nội</option>
+                  <option value="Ho Chi Minh">Hồ Chí Minh</option>
+                  <option value="Da Nang">Đà Nẵng</option>
+                  <option value="Can Tho">Cần Thơ</option>
+                  <option value="Remote">Remote</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-12 col-sm-4">
+              <button class="btn btn-primary w-100" id="btn-search">
+                <i class="fa fa-search me-2"></i>Tìm kiếm
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stats -->
+    <div class="container-xxl py-5">
+      <div class="container">
+        <div class="row g-5">
+          <div class="col-lg-4 wow fadeInUp" data-wow-delay="0.1s">
+            <div class="bg-light rounded p-4 text-center h-100">
+              <i class="fa fa-briefcase fa-3x text-primary mb-3"></i>
+              <h1 class="display-5 fw-bold" id="stat-jobs">...</h1>
+              <p class="mb-0">Việc làm</p>
+            </div>
+          </div>
+          <div class="col-lg-4 wow fadeInUp" data-wow-delay="0.3s">
+            <div class="bg-light rounded p-4 text-center h-100">
+              <i class="fa fa-building fa-3x text-primary mb-3"></i>
+              <h1 class="display-5 fw-bold" id="stat-companies">...</h1>
+              <p class="mb-0">Công ty</p>
+            </div>
+          </div>
+          <div class="col-lg-4 wow fadeInUp" data-wow-delay="0.5s">
+            <div class="bg-light rounded p-4 text-center h-100">
+              <i class="fa fa-layer-group fa-3x text-primary mb-3"></i>
+              <h1 class="display-5 fw-bold" id="stat-categories">...</h1>
+              <p class="mb-0">Ngành nghề</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Latest Jobs -->
+    <div class="container-xxl py-5">
+      <div class="container">
+        <h1 class="mb-5 wow fadeInUp" data-wow-delay="0.1s">
+          <span class="text-primary">Việc Làm</span> Mới Nhất
+        </h1>
+        <div class="row g-4" id="jobs-grid">
+          <div class="col-12 text-center py-5">
+            <div class="spinner-border text-primary" role="status"></div>
+          </div>
+        </div>
+        <div class="text-center mt-4 wow fadeInUp">
+          <a class="btn btn-primary py-3 px-5" href="/static/jobs.html">Xem Tất Cả Việc Làm</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Top Companies -->
+    <div class="container-xxl py-5 bg-light">
+      <div class="container">
+        <h1 class="mb-5 wow fadeInUp" data-wow-delay="0.1s">
+          <span class="text-primary">Công Ty</span> Hàng Đầu
+        </h1>
+        <div class="row g-4" id="companies-grid"></div>
+      </div>
+    </div>
+
+    <!-- Top Categories -->
+    <div class="container-xxl py-5">
+      <div class="container">
+        <h1 class="mb-5 wow fadeInUp" data-wow-delay="0.1s">
+          <span class="text-primary">Ngành Nghề</span> Nổi Bật
+        </h1>
+        <div class="row g-4" id="categories-grid"></div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <section id="career-handbook-home" class="container-xxl py-5 d-none">
+      <div class="container">
+        <div class="d-flex justify-content-between align-items-end mb-4"><div><h6 class="text-primary">CẨM NANG NGHỀ NGHIỆP</h6><h2 class="mb-0">Hành trang cho bước tiến tiếp theo</h2></div><a href="/static/career_handbook.html" class="btn btn-outline-primary">Xem tất cả</a></div>
+        <div id="career-guides-home-grid" class="row g-4"></div>
+      </div>
+    </section>
+
+    <div class="container-fluid bg-dark text-white-50 footer pt-5 mt-5 wow fadeIn" data-wow-delay="0.1s">
+      <div class="container py-5">
+        <div class="row g-5">
+          <div class="col-lg-3 col-md-6">
+            <h5 class="text-white mb-4">Job4U</h5>
+            <p>Nền tảng tuyển dụng hiện đại, kết nối hàng nghìn cơ hội việc làm với ứng viên tiềm năng.</p>
+            <div class="d-flex pt-2">
+              <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-facebook-f"></i></a>
+              <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-linkedin-in"></i></a>
+              <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-youtube"></i></a>
+            </div>
+          </div>
+          <div class="col-lg-3 col-md-6">
+            <h5 class="text-white mb-4">Công ty</h5>
+            <a class="btn btn-link text-white-50" href="/static/about.html">Về chúng tôi</a>
+            <a class="btn btn-link text-white-50" href="/static/contact.html">Liên hệ</a>
+            <a class="btn btn-link text-white-50" href="/static/jobs.html">Việc làm</a>
+          </div>
+          <div class="col-lg-3 col-md-6">
+            <h5 class="text-white mb-4">Liên kết nhanh</h5>
+            <a class="btn btn-link text-white-50" href="/static/index.html">Trang chủ</a>
+            <a class="btn btn-link text-white-50" href="/static/jobs.html">Tìm việc</a>
+            <a class="btn btn-link text-white-50" href="/static/company.html">Công ty</a>
+            <a class="btn btn-link text-white-50" href="/static/categories.html">Ngành nghề</a>
+          </div>
+          <div class="col-lg-3 col-md-6">
+            <h5 class="text-white mb-4">Liên hệ</h5>
+            <p class="mb-2"><i class="fa fa-map-marker-alt me-3"></i>Hồ Chí Minh, Việt Nam</p>
+            <p class="mb-2"><i class="fa fa-phone-alt me-3"></i>+84 88 982 9670</p>
+            <p class="mb-2"><i class="fa fa-envelope me-3"></i>contact@job4u.vn</p>
+          </div>
+        </div>
+      </div>
+      <div class="container">
+        <div class="copyright">
+          <div class="row">
+            <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
+              &copy; <a class="border-bottom" href="#">Job4U</a>, All Right Reserved.
+            </div>
+            <div class="col-md-6 text-center text-md-end">
+              <div class="footer-menu">
+                <a href="/static/index.html">Trang chủ</a>
+                <a href="/static/about.html">Về chúng tôi</a>
+                <a href="/static/contact.html">Liên hệ</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Back to Top -->
+    <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
+  </div>
+
+  <!-- JS Libraries -->
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="/static/lib/wow/wow.min.js"></script>
+  <script src="/static/lib/easing/easing.min.js"></script>
+  <script src="/static/lib/waypoints/waypoints.min.js"></script>
+  <script src="/static/lib/owlcarousel/owl.carousel.min.js"></script>
+  <script src="/static/js/main.js"></script>
+
+  <!-- API & Page Scripts -->
+  <script src="/static/js/api.js?v=20260812-2"></script>
+  <script src="/static/js/site_navbar.js"></script>
+  <script src="/static/js/auth.js?v=20260904-1"></script>
+  <script>window.JobPortalAuth.refreshNavbar();</script>
+  <script src="/static/js/websocket.js"></script>
+  <script>
+    async function loadStats() {
+      try {
+        const d = await apiFetch('/stats');
+        document.getElementById('stat-jobs').textContent = (d.total_jobs || 0).toLocaleString();
+        document.getElementById('stat-companies').textContent = (d.total_companies || 0).toLocaleString();
+        document.getElementById('stat-categories').textContent = (d.total_categories || 0).toLocaleString();
+      } catch (e) { }
+    }
+
+    async function loadLatestJobs() {
+      const grid = document.getElementById('jobs-grid');
+      try {
+        const jobs = await apiFetch('/jobs/latest?limit=6');
+        if (!jobs.length) {
+          grid.innerHTML = '<div class="col-12 text-center py-5"><p class="text-muted">Chưa có việc làm</p></div>';
+          return;
+        }
+        function limitText(text, maxLength = 50) {
+          if (!text) return 'N/A';
+          return text.length > maxLength ? text.substring(0, maxLength) + '...' : text;
+        }
+        grid.innerHTML = jobs.map(j => `
+<div class="col-lg-6 col-md-12 wow fadeInUp" data-wow-delay="0.1s">
+    <div class="job-item p-4 mb-4 cursor-pointer" onclick="window.location='/static/job_detail.html?id=${j.id}'">
+        <div class="d-flex align-items-center flex-wrap flex-md-nowrap">
+            <div class="flex-grow-1 text-start">
+                <h5 class="mb-2" style="font-size:1.1rem; color: #2B3940; line-height: 1.4;">
+                    ${limitText(j.title, 65)}
+                </h5>
+
+                <div class="mb-2">
+                    <span class="badge bg-light text-primary border" style="font-size: 0.75rem; font-weight: 500;">
+                        ${j.category_name || 'Việc làm'}
+                    </span>
+                </div>
+
+                <div class="d-flex flex-wrap align-items-center text-muted" style="font-size: 0.85rem;">
+                    <span class="me-3 mb-1">
+                        <i class="fa fa-map-marker-alt text-primary me-2"></i>
+                        ${limitText(j.location, 25)}
+                    </span>
+
+                    <span class="me-3 mb-1">
+                        <i class="far fa-money-bill-alt text-primary me-2"></i>
+                        ${formatSalary(j.salary)}
+                    </span>
+
+                    <span class="mb-1">
+                        <i class="fa fa-building text-primary me-2"></i>
+                        ${limitText(j.company_name, 35)}
+                    </span>
+                </div>
+            </div>
+
+            <div class="ms-md-auto mt-3 mt-md-0 d-flex flex-row flex-md-column align-items-center align-items-md-end justify-content-between" style="min-width: 130px;">
+                <span class="badge bg-primary text-white px-3 py-2 rounded-pill mb-0 mb-md-3 ${j.experience === 'Không yêu cầu' ? 'd-none' : ''}">
+                    ${limitText(j.experience, 15)}
+                </span>
+
+                <button class="btn btn-primary btn-sm"
+                    onclick="event.stopPropagation();window.open('${j.job_url}','_blank')">
+                    Ứng tuyển
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+`).join('');
+      } catch (e) {
+        grid.innerHTML = '<div class="col-12 text-center py-5"><p class="text-muted">Không thể tải dữ liệu</p></div>';
+      }
+    }
+
+    async function loadTopCompanies() {
+      const grid = document.getElementById('companies-grid');
+      try {
+        const data = await apiFetch('/companies/top?limit=6');
+        if (!data.length) return;
+        grid.innerHTML = data.map(c => `
+                <div class="col-lg-2 col-md-4 col-sm-6 wow fadeIn" data-wow-delay="0.1s">
+                    <div class="bg-white rounded p-4 text-center shadow-sm h-100 cursor-pointer" onclick="window.location='/static/jobs.html?company=${encodeURIComponent(c.name)}'">
+                        <h6 class="mb-1">${c.name}</h6>
+                        <small class="text-primary">${c.job_count} việc làm</small>
+                    </div>
+                </div>`).join('');
+      } catch (e) { }
+    }
+
+    async function loadTopCategories() {
+      const grid = document.getElementById('categories-grid');
+      try {
+        const data = await apiFetch('/categories/top?limit=8');
+        if (!data.length) return;
+        const icons = ['fa-laptop-code', 'fa-chart-bar', 'fa-cog', 'fa-paint-brush', 'fa-database', 'fa-users', 'fa-shield-alt', 'fa-mobile-alt'];
+        grid.innerHTML = data.map((c, i) => `
+                <div class="col-lg-3 col-md-4 col-sm-6 wow fadeIn" data-wow-delay="${0.1 * (i + 1)}s">
+                    <div class="cat-item d-flex align-items-center rounded p-4 bg-light h-100 cursor-pointer" onclick="window.location='/static/jobs.html?category=${encodeURIComponent(c.name)}'">
+                        <div class="flex-shrink-0 bg-primary rounded-circle d-flex align-items-center justify-content-center me-4" style="width:60px;height:60px">
+                            <i class="fa ${icons[i % icons.length]} fa-lg text-white"></i>
+                        </div>
+                        <div>
+                            <h6 class="mb-0">${c.name}</h6>
+                            <small class="text-primary">${c.job_count} việc làm</small>
+                        </div>
+                    </div>
+                </div>`).join('');
+      } catch (e) { }
+    }
+
+    function handbookEscape(value) {
+      return String(value ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+    }
+
+    async function loadFeaturedCareerGuides() {
+      const section = document.getElementById('career-handbook-home');
+      const grid = document.getElementById('career-guides-home-grid');
+      try {
+        const data = await apiFetch('/career-guides?page=1&page_size=3');
+        if (!data.items?.length) return;
+        grid.innerHTML = data.items.map(g => `
+          <div class="col-lg-4 col-md-6">
+            <a class="bg-white rounded shadow-sm h-100 d-block p-4 text-decoration-none" href="/static/career_guide_detail.html?slug=${encodeURIComponent(g.slug)}">
+              <small class="text-primary fw-bold">${handbookEscape(g.category.name)}</small>
+              <h5 class="text-dark mt-2">${handbookEscape(g.title)}</h5>
+              <p class="text-muted small mb-0">${handbookEscape(g.summary)}</p>
+            </a>
+          </div>`).join('');
+        section.classList.remove('d-none');
+      } catch (e) { }
+    }
+
+    document.getElementById('btn-search').addEventListener('click', function () {
+      const kw = document.getElementById('search-keyword').value.trim();
+      const loc = document.getElementById('search-location').value;
+      const p = new URLSearchParams();
+      if (kw) p.set('keyword', kw);
+      if (loc) p.set('location', loc);
+      window.location = '/static/jobs.html?' + p.toString();
+    });
+
+    document.getElementById('search-keyword').addEventListener('keypress', e => {
+      if (e.key === 'Enter') document.getElementById('btn-search').click();
+    });
+
+    loadStats();
+    loadLatestJobs();
+    loadTopCompanies();
+    loadTopCategories();
+    loadFeaturedCareerGuides();
+  </script>
+</body>
+
+</html>

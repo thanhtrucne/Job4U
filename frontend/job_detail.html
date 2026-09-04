@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="utf-8">
+    <title>Chi Tiết Việc Làm - Job4U</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <link href="/static/img/favicon.ico" rel="icon">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600&family=Inter:wght@700;800&display=swap"
+        rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="/static/lib/animate/animate.min.css" rel="stylesheet">
+    <link href="/static/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/static/css/style_jobtop.css" rel="stylesheet">
+    <style>
+        /* ── Section Viec Lam Tuong Tu ── */
+        #section-recommend {
+            background: linear-gradient(135deg, #f8f9ff 0%, #eef2ff 100%);
+            border-radius: 16px;
+            padding: 2.5rem;
+            margin-top: 2rem;
+            border: 1px solid #e0e7ff;
+        }
+
+        #section-recommend .section-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 1.5rem;
+        }
+
+        #section-recommend .section-icon {
+            width: 44px;
+            height: 44px;
+            background: linear-gradient(135deg, #00B074, #00D68F);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.1rem;
+            flex-shrink: 0;
+        }
+
+        .recommend-card {
+            background: #fff;
+            border-radius: 12px;
+            padding: 1.25rem 1.5rem;
+            border: 1.5px solid #e5eaf5;
+            transition: all 0.25s ease;
+            position: relative;
+            overflow: hidden;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .recommend-card:hover {
+            border-color: #00B074;
+            box-shadow: 0 8px 24px rgba(0, 176, 116, 0.12);
+            transform: translateY(-3px);
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .recommend-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(180deg, #00B074, #00D68F);
+            border-radius: 12px 0 0 12px;
+            opacity: 0;
+            transition: opacity 0.25s;
+        }
+
+        .recommend-card:hover::before {
+            opacity: 1;
+        }
+
+        .already-applied-notice {
+            border-color: #b7e5f0;
+            color: #245d6e;
+            background: #d9f4fb;
+        }
+
+        .recommend-logo {
+            width: 44px;
+            height: 44px;
+            border-radius: 10px;
+            border: 1.5px solid #e5eaf5;
+            object-fit: contain;
+            background: #f8fafc;
+        }
+
+        .recommend-logo-text {
+            width: 44px;
+            height: 44px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #00B074, #007AFF);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 0.9rem;
+            flex-shrink: 0;
+        }
+
+        .similarity-badge {
+            font-size: 0.7rem;
+            font-weight: 600;
+            padding: 3px 8px;
+            border-radius: 20px;
+            background: linear-gradient(135deg, #e8fff5, #ccf7e8);
+            color: #00875A;
+            border: 1px solid #b7f0d9;
+            white-space: nowrap;
+        }
+
+        .recommend-title {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: #1a1a2e;
+            line-height: 1.35;
+            margin-bottom: 4px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .recommend-meta {
+            font-size: 0.8rem;
+            color: #6c757d;
+        }
+
+        .recommend-meta .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            margin-bottom: 2px;
+        }
+
+        #recommend-skeleton .skeleton-card {
+            background: #fff;
+            border-radius: 12px;
+            padding: 1.25rem 1.5rem;
+            border: 1.5px solid #e5eaf5;
+            height: 130px;
+        }
+
+        .skeleton-line {
+            height: 12px;
+            border-radius: 6px;
+            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+            background-size: 200% 100%;
+            animation: skeleton-shimmer 1.4s infinite;
+            margin-bottom: 8px;
+        }
+
+        @keyframes skeleton-shimmer {
+            0% {
+                background-position: 200% 0;
+            }
+
+            100% {
+                background-position: -200% 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container-xxl bg-white p-0">
+        <div id="spinner"
+            class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+            <div class="spinner-border text-primary" style="width:3rem;height:3rem;" role="status"></div>
+        </div>
+
+        <!-- Navbar -->
+        <nav class="navbar navbar-expand-lg bg-white navbar-light shadow sticky-top p-0">
+            <a href="/" class="navbar-brand d-flex align-items-center text-center py-0 px-4 px-lg-5">
+                <h1 class="m-0 text-primary">Job4U</h1>
+            </a>
+            <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse"
+                data-bs-target="#navbarCollapse">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarCollapse">
+                <div class="navbar-nav ms-auto p-4 p-lg-0">
+                    <a href="/" class="nav-item nav-link">Trang chủ</a>
+                    <a href="/static/jobs.html" class="nav-item nav-link active">Việc làm</a>
+                    <a href="/static/cv_match.html" class="nav-item nav-link">Phân Tích CV</a>
+
+                </div>
+                <div id="nav-auth-area" class="d-flex gap-2 me-3 mb-3 mb-lg-0">
+                    <a class="btn btn-outline-primary btn-sm" href="/static/login.html">Đăng nhập</a>
+                    <a class="btn btn-primary btn-sm" href="/static/register.html">Đăng ký</a>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Page Header -->
+        <div class="container-xxl py-5 bg-dark page-header mb-5">
+            <div class="container my-5 pt-5 pb-4">
+                <h1 class="display-3 text-white mb-3 animated slideInDown" id="breadcrumb-title">Chi Tiết Việc Làm</h1>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb text-uppercase">
+                        <li class="breadcrumb-item"><a href="/">Trang chủ</a></li>
+                        <li class="breadcrumb-item"><a href="/static/jobs.html">Việc làm</a></li>
+                        <li class="breadcrumb-item text-white active">Chi tiết</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+
+        <!-- Content -->
+        <div class="container-xxl py-5">
+            <div class="container">
+                <!-- Loading -->
+                <div id="loading" class="text-center py-5">
+                    <div class="spinner-border text-primary" style="width:3rem;height:3rem;" role="status"></div>
+                </div>
+                <!-- Error -->
+                <div id="error" class="text-center py-5 d-none">
+                    <i class="fa fa-exclamation-circle fa-3x text-muted mb-3"></i>
+                    <h3>Không tìm thấy việc làm</h3>
+                    <a href="/static/jobs.html" class="btn btn-primary mt-3">Quay lại danh sách</a>
+                </div>
+
+                <!-- Job Detail -->
+                <div class="row g-5 d-none" id="job-detail">
+                    <!-- Main -->
+                    <div class="col-lg-8 wow fadeIn" data-wow-delay="0.1s">
+                        <div class="mb-5">
+                            <h1 class="mb-3" id="d-title"></h1>
+                            <div class="d-flex flex-wrap gap-2 mb-4" id="d-meta"></div>
+                        </div>
+
+                        <div class="mb-5" id="sec-desc">
+                            <h4 class="mb-4 border-bottom pb-2">
+                                <i class="fa fa-clipboard-list text-primary me-2"></i>Mô Tả Công Việc
+                            </h4>
+                            <div id="d-description" style="white-space:pre-line;line-height:1.8"></div>
+                        </div>
+                        <div class="mb-5" id="sec-req">
+                            <h4 class="mb-4 border-bottom pb-2">
+                                <i class="fa fa-tasks text-primary me-2"></i>Yêu Cầu Công Việc
+                            </h4>
+                            <div id="d-requirements" style="white-space:pre-line;line-height:1.8"></div>
+                        </div>
+                        <div class="mb-5" id="sec-ben">
+                            <h4 class="mb-4 border-bottom pb-2">
+                                <i class="fa fa-gift text-primary me-2"></i>Quyền Lợi
+                            </h4>
+                            <div id="d-benefits" style="white-space:pre-line;line-height:1.8"></div>
+                        </div>
+                        <div class="mb-5" id="sec-skills">
+                            <h4 class="mb-4 border-bottom pb-2">
+                                <i class="fa fa-code text-primary me-2"></i>Kỹ Năng Yêu Cầu
+                            </h4>
+                            <div class="d-flex flex-wrap gap-2" id="d-skills"></div>
+                        </div>
+                        <section class="mb-5 border rounded p-4 bg-light" id="application-section">
+                            <h4 class="mb-3"><i class="fa fa-file-upload text-primary me-2"></i>Nộp hồ sơ</h4>
+                            <p class="text-muted small">Tải lên 1 tệp PDF, Word (.doc/.docx) hoặc JPG/JPEG, dung lượng tối đa 10 MB. Hồ sơ chỉ được gửi đến công ty của tin tuyển dụng này. Bạn có thể chọn thêm Giấy khám sức khỏe hoặc Bằng cấp/chứng chỉ đã xác minh trong Ví giấy tờ.</p>
+                            <div id="application-notice" class="alert d-none" role="alert"></div>
+                            <form id="application-form">
+                                <div class="mb-3">
+                                    <label for="application-file" class="form-label">Chọn hồ sơ</label>
+                                    <input id="application-file" name="file" class="form-control" type="file" accept=".pdf,.doc,.docx,.jpg,.jpeg,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/jpeg" required>
+                                </div>
+                                <div class="form-check mb-3">
+                                    <input id="share-consent" name="share_consent" class="form-check-input" type="checkbox" required>
+                                    <label for="share-consent" class="form-check-label">Tôi đồng ý gửi hồ sơ này đến công ty tuyển dụng theo <a href="/static/personal_data_policy.html" target="_blank" rel="noopener">Chính sách dữ liệu cá nhân</a>.</label>
+                                </div>
+                                <button id="submit-application" class="btn btn-primary" type="submit"><i class="fa fa-paper-plane me-2"></i>Nộp hồ sơ</button>
+                            </form>
+                        </section>
+                    </div>
+
+                    <!-- Sidebar -->
+                    <div class="col-lg-4 wow fadeIn" data-wow-delay="0.3s">
+                        <div class="bg-light rounded p-4 mb-4">
+                            <button class="btn btn-primary w-100 py-3 mb-4" id="btn-apply">
+                                <i class="fa fa-paper-plane me-2"></i>Ứng Tuyển Ngay
+                            </button>
+                            <div id="d-info"></div>
+                        </div>
+                        <div class="bg-light rounded p-4" id="company-card"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section: Viec Lam Tuong Tu (Job Recommendations) -->
+        <div class="container-xxl pb-5">
+            <div class="container">
+                <div id="section-recommend" class="d-none">
+                    <div class="section-header">
+                        <div class="section-icon">
+                            <i class="fa fa-robot"></i>
+                        </div>
+                        <div>
+                            <h4 class="mb-0" style="color:#1a1a2e;">Việc Làm Tương Tự</h4>
+                            <p class="mb-0 text-muted" style="font-size:0.85rem;">
+                                <i class="fa fa-magic me-1 text-success"></i>
+                                Gợi ý bởi AI dựa trên phân tích TF-IDF + Cosine Similarity
+                            </p>
+                        </div>
+                    </div>
+                    <!-- Skeleton loading -->
+                    <div id="recommend-skeleton" class="row g-3">
+                        <div class="col-md-6 col-lg-4">
+                            <div class="skeleton-card">
+                                <div class="skeleton-line" style="width:60%"></div>
+                                <div class="skeleton-line" style="width:40%"></div>
+                                <div class="skeleton-line" style="width:80%"></div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-lg-4">
+                            <div class="skeleton-card">
+                                <div class="skeleton-line" style="width:70%"></div>
+                                <div class="skeleton-line" style="width:45%"></div>
+                                <div class="skeleton-line" style="width:65%"></div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-lg-4 d-none d-lg-block">
+                            <div class="skeleton-card">
+                                <div class="skeleton-line" style="width:55%"></div>
+                                <div class="skeleton-line" style="width:50%"></div>
+                                <div class="skeleton-line" style="width:75%"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Result cards -->
+                    <div id="recommend-results" class="row g-3 d-none"></div>
+                    <!-- Empty state -->
+                    <div id="recommend-empty" class="text-center py-4 d-none">
+                        <i class="fa fa-search fa-2x text-muted mb-2"></i>
+                        <p class="text-muted">Chưa tìm thấy việc làm tương tự.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="container-fluid bg-dark text-white-50 footer pt-5 mt-5 wow fadeIn" data-wow-delay="0.1s">
+            <div class="container py-5">
+                <div class="row g-5">
+                    <div class="col-lg-4 col-md-6">
+                        <h5 class="text-white mb-4">Job4U</h5>
+                        <p>Nền tảng tuyển dụng hiện đại, kết nối hàng nghìn cơ hội việc làm.</p>
+                    </div>
+                    <div class="col-lg-4 col-md-6">
+                        <h5 class="text-white mb-4">Liên kết</h5>
+                        <a class="btn btn-link text-white-50" href="/">Trang chủ</a>
+                        <a class="btn btn-link text-white-50" href="/static/jobs.html">Việc làm</a>
+                        <a class="btn btn-link text-white-50" href="/static/about.html">Về chúng tôi</a>
+                    </div>
+                    <div class="col-lg-4 col-md-6">
+                        <h5 class="text-white mb-4">Liên hệ</h5>
+                        <p class="mb-2"><i class="fa fa-envelope me-3"></i>contact@job4u.vn</p>
+                    </div>
+                </div>
+            </div>
+            <div class="container">
+                <div class="copyright">
+                    <div class="row">
+                        <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
+                            &copy; <a class="border-bottom" href="#">Job4U</a>, All Right Reserved.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/static/lib/wow/wow.min.js"></script>
+    <script src="/static/lib/easing/easing.min.js"></script>
+    <script src="/static/lib/waypoints/waypoints.min.js"></script>
+    <script src="/static/js/main.js"></script>
+    <!-- ⚠️ api.js PHẢI load trước auth.js để apiFetch sẵn sàng -->
+    <script src="/static/js/api.js?v=20260812-2"></script>
+    <script src="/static/js/auth.js?v=20260903-6"></script>
+    <script>window.JobPortalAuth.refreshNavbar();</script>
+    <script src="/static/js/websocket.js"></script>
+    <script>
+        async function loadJob() {
+            const id = new URLSearchParams(window.location.search).get('id');
+            if (!id) { showError(); return; }
+            try {
+                const j = await apiFetch(`/jobs/${id}`);
+                document.title = `${j.title} - Job4U`;
+                document.getElementById('breadcrumb-title').textContent = j.title;
+                document.getElementById('d-title').textContent = j.title || '';
+
+                const meta = [];
+                if (j.salary) meta.push(`<span class="badge bg-success fs-6 px-3 py-2">${formatSalary(j.salary)}</span>`);
+                if (j.location) meta.push(`<span class="badge bg-primary fs-6 px-3 py-2"><i class="fa fa-map-marker-alt me-1"></i>${j.location}</span>`);
+                if (j.experience && j.experience !== 'Không yêu cầu') {
+                    meta.push(`<span class="badge bg-secondary fs-6 px-3 py-2">${j.experience}</span>`);
+                }
+                if (j.job_type) meta.push(`<span class="badge bg-info text-dark fs-6 px-3 py-2">${j.job_type}</span>`);
+                document.getElementById('d-meta').innerHTML = meta.join('');
+
+                function formatDescription(text) {
+                    if (!text) return '';
+                    const sections = [
+                        'Mô tả công việc', 'Yêu cầu ứng viên', 'Quyền lợi',
+                        'Yêu cầu công việc', 'Địa điểm làm việc', 'Thời gian làm việc',
+                        'Cách thức ứng tuyển', 'Kinh nghiệm:', 'Kỹ năng:', 'Phần mềm:',
+                        'Kỹ năng mềm:', 'Quyền lợi được hưởng:', 'Chế độ:', 'Hỗ trợ:', 'Yêu cầu:'
+                    ];
+
+                    let formatted = text;
+                    sections.forEach(s => {
+                        const regex = new RegExp(`(${s})`, 'g');
+                        // Thêm 2 xuống dòng và bôi đậm tiêu đề
+                        formatted = formatted.replace(regex, '<br><br><strong>$1</strong><br>');
+                    });
+
+                    // Xử lý các dấu chấm tròn (bullet points) tự động nếu có
+                    formatted = formatted.replace(/([•\-\*])\s*/g, '<br>• ');
+
+                    return formatted.trim();
+                }
+
+                function setSection(elId, secId, content) {
+                    if (content && content.trim()) {
+                        document.getElementById(elId).innerHTML = formatDescription(content);
+                    } else {
+                        document.getElementById(secId).classList.add('d-none');
+                    }
+                }
+                setSection('d-description', 'sec-desc', j.description);
+                setSection('d-requirements', 'sec-req', j.requirements);
+                setSection('d-benefits', 'sec-ben', j.benefits);
+
+                if (j.skills && j.skills.length) {
+                    document.getElementById('d-skills').innerHTML = j.skills.map(s =>
+                        `<span class="badge bg-light text-dark border px-3 py-2 fs-6">${s.name}</span>`).join('');
+                } else {
+                    document.getElementById('sec-skills').classList.add('d-none');
+                }
+
+                const infoRows = [
+                    { icon: 'fa-building', label: 'Công ty', value: j.company?.name || 'N/A' },
+                    { icon: 'fa-map-marker-alt', label: 'Địa điểm', value: j.location || 'N/A' },
+                    { icon: 'far fa-money-bill-alt', label: 'Mức lương', value: formatSalary(j.salary) },
+                    { icon: 'fa-user-clock', label: 'Kinh nghiệm', value: j.experience || 'N/A' },
+                    { icon: 'fa-calendar-alt', label: 'Ngày đăng', value: j.created_time || (j.created_at ? new Date(j.created_at).toLocaleDateString('vi-VN') : 'N/A') },
+                ];
+                document.getElementById('d-info').innerHTML = infoRows.map(r =>
+                    `<div class="d-flex justify-content-between border-bottom py-2">
+                    <span class="text-muted"><i class="fa ${r.icon} me-2 text-primary"></i>${r.label}</span>
+                    <strong class="text-end">${r.value}</strong>
+                </div>`).join('');
+
+                document.getElementById('btn-apply').onclick = async () => {
+                    // Crawl jobs are redirected by the API; partner jobs require a fresh consent confirmation.
+                    const token = Auth.getToken();
+                    if (!token) { alert('Vui lòng đăng nhập trước khi ứng tuyển.'); return; }
+                    const response = await fetch(`/api/applications/jobs/${j.id}`, { method: 'POST', headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' }, body: '[]' });
+                    const result = await response.json();
+                    if (!response.ok) { alert(result.detail || 'Không thể bắt đầu ứng tuyển.'); return; }
+                    if (result.mode === 'redirect') { window.open(result.url, '_blank'); return; }
+                    if (result.mode === 'missing_documents') { alert('Cần bổ sung giấy tờ: ' + result.missing_doc_types.join(', ')); return; }
+                    if (confirm(`Bạn đồng ý chia sẻ dữ liệu đã nêu cho ${result.recipient} chỉ để ${result.purpose}?`)) {
+                        const confirmed = await fetch(`/api/applications/${result.share_request_id}/confirm`, { method: 'POST', headers: { 'Authorization': `Bearer ${token}` } });
+                        const data = await confirmed.json(); alert(data.message || data.detail || 'Đã xử lý yêu cầu.');
+                    }
+                };
+
+                const applicationForm = document.getElementById('application-form');
+                const applicationNotice = document.getElementById('application-notice');
+                const submitApplicationButton = document.getElementById('submit-application');
+                const applyNowButton = document.getElementById('btn-apply');
+                const showApplicationNotice = (message, success) => {
+                    applicationNotice.textContent = message;
+                    applicationNotice.className = `alert ${success ? 'alert-success' : 'alert-danger'}`;
+                };
+                const markAlreadyApplied = (createdAt) => {
+                    const submittedAt = createdAt ? new Date(createdAt) : null;
+                    const time = submittedAt && !Number.isNaN(submittedAt.valueOf())
+                        ? submittedAt.toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' }) + ' ngày ' + submittedAt.toLocaleDateString('vi-VN')
+                        : 'trước đó';
+                    applicationNotice.innerHTML = `<i class="fa fa-info-circle me-2"></i><strong>Bạn đã ứng tuyển vị trí này lúc ${time}</strong>`;
+                    applicationNotice.className = 'alert already-applied-notice';
+                    applicationForm.dataset.applied = 'true';
+                    applicationForm.querySelectorAll('input, button').forEach(item => item.disabled = true);
+                    applyNowButton.disabled = true;
+                    applyNowButton.classList.remove('btn-primary');
+                    applyNowButton.classList.add('btn-secondary');
+                    applyNowButton.innerHTML = '<i class="fa fa-check me-2"></i>Đã ứng tuyển';
+                    applyNowButton.onclick = null;
+                };
+                applyNowButton.onclick = () => {
+                    document.getElementById('application-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    document.getElementById('application-file').focus();
+                };
+                const loadApplicationStatus = async () => {
+                    const token = Auth.getToken();
+                    if (!token) return;
+                    try {
+                        const response = await fetch(`/api/applications/jobs/${j.id}/status`, { headers: { Authorization: `Bearer ${token}` } });
+                        if (!response.ok) return;
+                        const status = await response.json();
+                        if (status.applied) markAlreadyApplied(status.created_at);
+                    } catch (_) { /* Status check must not block viewing the job. */ }
+                };
+                loadApplicationStatus();
+                applicationForm.onsubmit = async (event) => {
+                    event.preventDefault();
+                    const token = Auth.getToken();
+                    if (!token) { window.location.href = '/static/login.html'; return; }
+                    const selectedFile = document.getElementById('application-file').files[0];
+                    const allowedExtensions = ['pdf', 'doc', 'docx', 'jpg', 'jpeg'];
+                    const extension = selectedFile?.name.split('.').pop().toLowerCase();
+                    if (!selectedFile || !allowedExtensions.includes(extension)) { showApplicationNotice('Chỉ hỗ trợ PDF, Word (.doc/.docx) hoặc JPG/JPEG.', false); return; }
+                    if (selectedFile.size > 10 * 1024 * 1024) { showApplicationNotice('Tệp hồ sơ không được vượt quá 10 MB.', false); return; }
+                    if (!document.getElementById('share-consent').checked) { showApplicationNotice('Bạn cần đồng ý gửi hồ sơ cho công ty.', false); return; }
+                    const formData = new FormData();
+                    formData.append('additional_doc_types', JSON.stringify([...document.querySelectorAll('input[name="additional_doc_types"]:checked')].map(item => item.value)));
+                    formData.append('file', selectedFile);
+                    formData.append('share_consent', 'true');
+                    submitApplicationButton.disabled = true;
+                    try {
+                        const response = await fetch(`/api/applications/jobs/${j.id}/submit`, { method: 'POST', headers: { Authorization: `Bearer ${token}` }, body: formData });
+                        const result = await response.json();
+                        if (!response.ok) { showApplicationNotice(result.detail || 'Không thể nộp hồ sơ.', false); return; }
+                        showApplicationNotice(result.message || 'Đã nộp hồ sơ thành công.', true);
+                        applicationForm.reset();
+                        markAlreadyApplied(result.created_at || new Date().toISOString());
+                    } catch (_) {
+                        showApplicationNotice('Không thể kết nối để nộp hồ sơ. Vui lòng thử lại.', false);
+                    } finally {
+                        if (!applicationForm.dataset.applied) submitApplicationButton.disabled = false;
+                    }
+                };
+
+                if (j.company) {
+                    document.getElementById('company-card').innerHTML = `
+                    <div class="text-center mb-3">
+                        <h5 class="mb-1">${j.company.name}</h5>
+                        ${j.company.industry ? `<p class="text-muted small">${j.company.industry}</p>` : ''}
+                        ${j.company.location ? `<p class="text-muted small"><i class="fa fa-map-marker-alt me-1 text-primary"></i>${j.company.location}</p>` : ''}
+                    </div>
+                    <a href="/static/jobs.html?company=${encodeURIComponent(j.company.name)}" class="btn btn-outline-primary w-100">
+                        <i class="fa fa-briefcase me-2"></i>Xem tất cả việc làm
+                    </a>`;
+                } else {
+                    document.getElementById('company-card').classList.add('d-none');
+                }
+
+                document.getElementById('loading').classList.add('d-none');
+                document.getElementById('job-detail').classList.remove('d-none');
+            } catch (e) {
+                showError();
+            }
+        }
+
+        function showError() {
+            document.getElementById('loading').classList.add('d-none');
+            document.getElementById('error').classList.remove('d-none');
+        }
+
+        loadJob();
+    </script>
+</body>
+
+</html>

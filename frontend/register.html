@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Đăng ký — Job4U</title>
+  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600&family=Inter:wght@700;800&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+  <link href="/static/css/bootstrap.min.css" rel="stylesheet"><link href="/static/css/style_jobtop.css" rel="stylesheet">
+</head>
+<body><div class="container-xxl bg-white p-0 min-vh-100">
+  <nav class="navbar navbar-expand-lg bg-white navbar-light shadow sticky-top p-0">
+    <a href="/" class="navbar-brand d-flex align-items-center text-center py-0 px-4 px-lg-5"><h1 class="m-0 text-primary">Job4U</h1></a>
+    <div class="navbar-nav ms-auto p-3 p-lg-0"><a href="/" class="nav-item nav-link">Trang chủ</a><a href="/static/jobs.html" class="nav-item nav-link">Việc làm</a></div>
+    <div id="nav-auth-area" class="d-none"></div>
+  </nav>
+  <main class="container py-5"><div class="row justify-content-center"><div class="col-lg-6 col-md-8">
+    <div class="text-center mb-4"><span class="d-inline-flex align-items-center justify-content-center bg-primary rounded-circle text-white" style="width:56px;height:56px"><i class="fa fa-user-plus fa-lg"></i></span><h2 class="mt-3 mb-1">Tạo tài khoản ứng viên</h2><p class="text-muted">Email của bạn sẽ là tài khoản đăng nhập Job4U.</p></div>
+    <div class="card border-0 shadow-sm"><div class="card-body p-4 p-md-5"><div id="notice" class="alert d-none" role="alert"></div>
+      <form id="register-form" novalidate>
+        <div class="row g-3"><div class="col-12"><label class="form-label fw-semibold" for="full_name">Họ tên</label><input id="full_name" name="full_name" class="form-control" autocomplete="name" required placeholder="Nguyễn Văn A"></div>
+          <div class="col-md-6"><label class="form-label fw-semibold" for="phone_number">Số điện thoại</label><input id="phone_number" name="phone_number" class="form-control" type="tel" autocomplete="tel" required placeholder="09xxxxxxxx"></div>
+          <div class="col-md-6"><label class="form-label fw-semibold" for="email">Email</label><input id="email" name="email" class="form-control" type="email" autocomplete="email" required placeholder="you@example.com"></div>
+          <div class="col-md-6"><label class="form-label fw-semibold" for="password">Mật khẩu</label><input id="password" name="password" class="form-control" type="password" minlength="8" autocomplete="new-password" required><small class="text-muted">Ít nhất 8 ký tự.</small></div>
+          <div class="col-md-6"><label class="form-label fw-semibold" for="confirm_password">Nhập lại mật khẩu</label><input id="confirm_password" name="confirm_password" class="form-control" type="password" minlength="8" autocomplete="new-password" required></div></div>
+        <div class="form-check my-4"><input id="data_policy_accepted" name="data_policy_accepted" class="form-check-input" type="checkbox" required><label class="form-check-label" for="data_policy_accepted">Tôi đã đọc và đồng ý với <a href="/static/personal_data_policy.html" target="_blank" rel="noopener">Chính sách dữ liệu cá nhân</a> (phiên bản 2026.2).</label><div class="invalid-feedback">Bạn cần đồng ý Chính sách dữ liệu cá nhân để tạo tài khoản.</div></div>
+        <button id="submit" class="btn btn-primary w-100 py-2" type="submit">Tạo tài khoản</button>
+      </form>
+      <p class="text-center text-muted mt-4 mb-0">Đã có tài khoản? <a class="fw-semibold" id="login-link" href="/static/login.html">Đăng nhập</a></p>
+    </div></div>
+  </div></div></main>
+</div><script src="/static/js/auth.js?v=20260812-10"></script><script>
+  const form=document.getElementById('register-form'), notice=document.getElementById('notice'), button=document.getElementById('submit');
+  const next=new URLSearchParams(location.search).get('next');
+  const safeNext=next && next.startsWith('/') && !next.startsWith('//') ? next : '/';
+  document.getElementById('login-link').href='/static/login.html?next='+encodeURIComponent(safeNext);
+  function show(message,success){notice.textContent=message;notice.className=`alert ${success?'alert-success':'alert-danger'}`}
+  form.addEventListener('submit',async event=>{event.preventDefault();if(!form.checkValidity()){form.classList.add('was-validated');return}if(document.getElementById('password').value!==document.getElementById('confirm_password').value){show('Mật khẩu nhập lại không khớp.',false);return}button.disabled=true;try{const payload=Object.fromEntries(new FormData(form));payload.data_policy_accepted=document.getElementById('data_policy_accepted').checked;const response=await fetch('/api/auth/register',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});const result=await response.json();if(!response.ok){const detail=Array.isArray(result.detail)?result.detail.map(item=>item.msg).join(' '):result.detail;throw new Error(detail||'Không thể tạo tài khoản.')}localStorage.setItem('job_portal_token',result.access_token);localStorage.setItem('job_portal_user',JSON.stringify(result));show('Tạo tài khoản thành công. Đang chuyển trang…',true);setTimeout(()=>location.href=safeNext,700)}catch(error){show(error.message,false);button.disabled=false}});
+</script></body></html>

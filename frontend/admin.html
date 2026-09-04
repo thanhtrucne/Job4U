@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Quản trị | Job Portal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <style>
+    :root { --navy:#10112f; --blue:#5b61f2; --cyan:#48b7cd; --pink:#e94371; --ink:#24243a; --muted:#80849a; --line:#e9eaf2; --surface:#fff; --canvas:#f5f6fb; }
+    * { box-sizing:border-box; }
+    body { margin:0; color:var(--ink); background:var(--canvas); font-family:Inter,Arial,sans-serif; font-size:14px; }
+    .sidebar { position:fixed; inset:0 auto 0 0; z-index:10; width:244px; overflow-y:auto; padding:23px 13px; color:#c7c8db; background:var(--navy); }
+    .brand { display:flex; align-items:center; gap:10px; padding:3px 12px 28px; color:#fff; font-size:19px; font-weight:700; letter-spacing:.2px; }
+    .brand-mark { display:grid; width:30px; height:30px; place-items:center; border-radius:8px; background:var(--blue); font-size:14px; }
+    .menu-title { margin:15px 12px 8px; color:#747695; font-size:10px; font-weight:700; letter-spacing:1.1px; }
+    .menu-link { display:flex; align-items:center; gap:13px; width:100%; margin:3px 0; padding:12px; border:0; border-radius:7px; color:#c8c9da; background:transparent; text-align:left; font:inherit; cursor:pointer; transition:.18s; }
+    .menu-link i { width:16px; color:#989ab8; text-align:center; }
+    .menu-link:hover, .menu-link.active { color:#fff; background:#272750; }
+    .menu-link.active i { color:#7b82ff; }
+    .sidebar-bottom { position:absolute; right:13px; bottom:21px; left:13px; }
+    .main { min-height:100vh; margin-left:244px; }
+    .topbar { display:flex; align-items:center; justify-content:space-between; min-height:68px; padding:0 32px; border-bottom:1px solid var(--line); background:#fff; }
+    .mobile-brand { display:none; font-weight:700; }
+    .top-actions { display:flex; align-items:center; gap:18px; }
+    .top-actions button { border:0; background:transparent; color:#777b91; cursor:pointer; }
+    #admin-user { display:flex; align-items:center; gap:9px; color:#565971; font-size:13px; }
+    .avatar { display:grid; width:31px; height:31px; place-items:center; border-radius:50%; color:#fff; background:#7379ee; font-size:12px; font-weight:700; }
+    .content { max-width:1450px; margin:auto; padding:28px 32px 42px; }
+    .page-heading { display:flex; align-items:flex-start; justify-content:space-between; gap:16px; margin-bottom:22px; }
+    h1 { margin:0 0 7px; font-size:22px; letter-spacing:-.4px; }
+    .breadcrumb, .muted { color:var(--muted); font-size:12px; }
+    .btn { display:inline-flex; align-items:center; justify-content:center; gap:8px; min-height:37px; padding:8px 13px; border:1px solid #dfe1ed; border-radius:6px; color:#52566c; background:#fff; font:600 12px Inter,Arial,sans-serif; cursor:pointer; }
+    .btn-primary { border-color:var(--blue); color:#fff; background:var(--blue); }
+    .btn-danger { color:#d43e62; }
+    .metrics { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:17px; margin-bottom:18px; }
+    .metric { position:relative; min-height:135px; overflow:hidden; padding:18px; border:1px solid var(--line); border-radius:5px; background:var(--surface); }
+    .metric-label { color:#777b93; font-size:11px; font-weight:600; }
+    .metric-value { margin-top:12px; font-size:24px; font-weight:700; letter-spacing:-.6px; }
+    .metric-delta { position:absolute; top:50px; right:16px; color:#39a66c; font-size:10px; font-weight:600; }
+    .metric-delta.neutral { color:#6770d8; }
+    .metric-delta.warn { color:#db5878; }
+    .spark { position:absolute; right:0; bottom:0; left:0; height:53px; }
+    .grid-two { display:grid; grid-template-columns:minmax(0,2.15fr) minmax(260px,.85fr); gap:17px; margin-bottom:18px; }
+    .grid-three { display:grid; grid-template-columns:1fr 2.05fr 1.05fr; gap:17px; }
+    .panel { overflow:hidden; border:1px solid var(--line); border-radius:5px; background:var(--surface); }
+    .panel-head { display:flex; align-items:center; justify-content:space-between; min-height:54px; padding:0 15px; border-bottom:1px solid var(--line); }
+    .panel-title { font-size:12px; font-weight:700; }
+    .table-wrap { overflow-x:auto; }
+    table { width:100%; border-collapse:collapse; font-size:11px; }
+    th { padding:11px 12px; color:#62657b; background:#fbfbfd; font-size:10px; font-weight:700; text-align:left; white-space:nowrap; }
+    td { padding:12px; border-top:1px solid #eff0f5; color:#666a7d; vertical-align:middle; }
+    .job-name { color:#42455c; font-weight:600; }
+    .status { display:inline-flex; align-items:center; gap:5px; font-size:10px; }
+    .status:before { width:6px; height:6px; border-radius:50%; background:#4eba7c; content:""; }
+    .status.off:before { background:#f1a84c; }
+    .line-chart { min-height:245px; padding:16px 14px 10px; }
+    .line-chart svg { width:100%; height:205px; overflow:visible; }
+    .chart-legend { display:flex; justify-content:center; gap:14px; margin:2px 0 8px; color:#74778e; font-size:10px; }
+    .legend-dot { display:inline-block; width:7px; height:7px; margin-right:4px; border-radius:50%; }
+    .donut-wrap { display:grid; min-height:262px; place-items:center; padding:18px; }
+    .donut { display:grid; width:150px; height:150px; place-items:center; border-radius:50%; background:conic-gradient(var(--blue) 0 75%, var(--pink) 75% 100%); }
+    .donut:after { width:102px; height:102px; border-radius:50%; background:#fff; content:""; }
+    .donut-inner { position:absolute; z-index:1; text-align:center; }
+    .donut-inner strong { display:block; font-size:25px; }
+    .chart-note { margin-top:-22px; color:#777b91; font-size:10px; text-align:center; }
+    .bar-chart { display:flex; align-items:flex-end; justify-content:space-around; height:225px; padding:23px 22px 32px; background:repeating-linear-gradient(to bottom,transparent 0,transparent 43px,#f0f1f6 44px); }
+    .bar-set { display:flex; align-items:flex-end; gap:3px; height:160px; }
+    .bar { width:16px; background:var(--blue); }
+    .bar.alt { background:var(--pink); }.bar.cyan { background:var(--cyan); }
+    .bar-label { position:relative; top:22px; left:-22px; color:#76798d; font-size:10px; }
+    .mini-list { padding:3px 15px 13px; }
+    .mini-row { display:flex; justify-content:space-between; gap:10px; padding:12px 0; border-bottom:1px solid #f0f1f5; color:#6e7185; font-size:11px; }
+    .mini-row:last-child { border-bottom:0; }.mini-row strong { color:#4f5266; font-size:11px; }
+    .section { display:none; }.section.active { display:block; }
+    .management { padding:19px; }
+    .toolbar { display:flex; align-items:center; gap:10px; margin-bottom:17px; }
+    input, select, textarea { width:100%; padding:9px 10px; border:1px solid #dde0eb; border-radius:5px; outline:0; color:#34364a; background:#fff; font:13px Inter,Arial,sans-serif; }
+    input:focus, select:focus, textarea:focus { border-color:#8489ee; box-shadow:0 0 0 3px #5b61f218; }
+    .search { max-width:320px; }.toolbar .btn { margin-left:auto; }
+    .form-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px; margin:15px 0 2px; }
+    .form-grid label { display:grid; gap:6px; color:#65687c; font-size:11px; font-weight:600; }.form-grid .wide { grid-column:span 3; }
+    .form-grid .form-section { grid-column:span 3; margin:8px 0 -2px; padding-top:12px; border-top:1px solid var(--line); color:var(--navy); font-size:13px; font-weight:700; }
+    .inline-actions { display:flex; gap:6px; }.small-btn { padding:5px 7px; min-height:auto; font-size:10px; }
+    .empty { padding:25px; color:#85889b; text-align:center; }
+    .notice { display:none; margin-bottom:14px; padding:11px 13px; border-radius:5px; color:#255f71; background:#e1f6fb; }.notice.error { color:#9d314b; background:#fee9ed; }
+    .editor-source { display:none; }
+    #editor-modal { width:min(760px,calc(100vw - 30px)); max-height:calc(100vh - 36px); margin:auto; padding:0; border:0; border-radius:12px; box-shadow:0 24px 70px #15163155; }
+    #editor-modal::backdrop { background:#10112f88; backdrop-filter:blur(2px); }
+    .modal-head { display:flex; align-items:center; justify-content:space-between; padding:18px 21px; border-bottom:1px solid var(--line); }
+    .modal-head h2 { margin:0; font-size:17px; }.modal-close { width:32px; height:32px; border:0; border-radius:6px; color:#65687c; background:#f3f4f8; cursor:pointer; font-size:18px; }
+    .modal-body { overflow-y:auto; max-height:calc(100vh - 125px); padding:5px 21px 22px; }.modal-body .form-grid { margin-top:16px; }.modal-body .wide:last-child { display:flex; justify-content:flex-end; }
+    @media (max-width:1100px) { .metrics { grid-template-columns:repeat(2,1fr); }.grid-three { grid-template-columns:1fr 1fr; }.grid-three .panel:last-child { grid-column:span 2; }.form-grid { grid-template-columns:repeat(2,1fr); }.form-grid .wide { grid-column:span 2; } }
+    @media (max-width:780px) { .sidebar { position:static; width:auto; min-height:0; padding:14px; }.sidebar-bottom { position:static; margin-top:12px; }.brand { padding-bottom:10px; }.menu-title { display:none; }.menu-link { display:inline-flex; width:auto; }.main { margin-left:0; }.topbar { padding:0 17px; }.mobile-brand { display:block; }.content { padding:20px 15px; }.metrics,.grid-two,.grid-three { grid-template-columns:1fr; }.grid-three .panel:last-child { grid-column:auto; }.form-grid { grid-template-columns:1fr; }.form-grid .wide { grid-column:auto; }.page-heading { align-items:flex-start; }.top-actions .bell { display:none; } }
+  </style>
+</head>
+<body>
+  <aside class="sidebar">
+    <div class="brand"><span class="brand-mark"><i class="fa-solid fa-briefcase"></i></span>Job Portal</div>
+    <div class="menu-title">QUẢN TRỊ</div>
+    <button class="menu-link active" data-section="overview"><i class="fa-solid fa-chart-pie"></i>Tổng quan</button>
+    <div class="menu-title">QUẢN LÝ</div>
+    <button class="menu-link" data-section="users"><i class="fa-solid fa-users"></i>Tài khoản người dùng</button>
+    <button class="menu-link" data-section="jobs"><i class="fa-solid fa-briefcase"></i>Việc làm</button>
+    <button class="menu-link" data-section="companies"><i class="fa-solid fa-building"></i>Công ty</button>
+    <a class="menu-link" href="/static/admin_career_handbook.html"><i class="fa-solid fa-book-open"></i>Cẩm nang nghề nghiệp</a>
+    <div class="sidebar-bottom"><a class="menu-link" href="/static/index.html"><i class="fa-solid fa-arrow-left"></i>Về trang chủ</a></div>
+  </aside>
+  <main class="main">
+    <header class="topbar"><span class="mobile-brand">Job Portal</span><span></span><div class="top-actions"><button class="bell" title="Thông báo"><i class="fa-regular fa-bell"></i></button><span id="admin-user"><span class="avatar">AD</span>Quản trị viên</span><button id="logout" title="Đăng xuất"><i class="fa-solid fa-right-from-bracket"></i></button></div></header>
+    <div class="content">
+      <div id="notice" class="notice"></div>
+      <section id="overview" class="section active">
+        <div class="page-heading"><div><h1>Bảng điều khiển quản trị</h1><div class="breadcrumb">Trang chủ &nbsp;›&nbsp; Tổng quan</div></div><button class="btn" data-section="jobs"><i class="fa-solid fa-briefcase"></i> Quản lý việc làm</button></div>
+        <div class="metrics">
+          <article class="metric"><div class="metric-label">TỔNG NGƯỜI DÙNG</div><div id="users-count" class="metric-value">—</div><span class="metric-delta">Đã đăng ký</span><svg class="spark" viewBox="0 0 260 55" preserveAspectRatio="none"><path d="M0 50L35 41 60 43 92 15 125 34 158 22 190 42 225 17 260 6V55H0Z" fill="#5b61f21c"/><path d="M0 50L35 41 60 43 92 15 125 34 158 22 190 42 225 17 260 6" fill="none" stroke="#5b61f2" stroke-width="1.7"/></svg></article>
+          <article class="metric"><div class="metric-label">TỔNG VIỆC LÀM</div><div id="jobs-count" class="metric-value">—</div><span class="metric-delta">Trong hệ thống</span><svg class="spark" viewBox="0 0 260 55" preserveAspectRatio="none"><path d="M0 53L25 10 55 25 85 18 115 35 145 22 178 43 209 30 260 50V55H0Z" fill="#e9437119"/><path d="M0 53L25 10 55 25 85 18 115 35 145 22 178 43 209 30 260 50" fill="none" stroke="#e94371" stroke-width="1.7"/></svg></article>
+          <article class="metric"><div class="metric-label">VIỆC LÀM ĐANG HIỂN THỊ</div><div id="active-jobs-count" class="metric-value">—</div><span class="metric-delta neutral">Đang hoạt động</span><svg class="spark" viewBox="0 0 260 55" preserveAspectRatio="none"><path d="M0 29L30 43 62 25 95 32 125 9 157 43 190 29 224 17 260 48V55H0Z" fill="#48b7cd19"/><path d="M0 29L30 43 62 25 95 32 125 9 157 43 190 29 224 17 260 48" fill="none" stroke="#48b7cd" stroke-width="1.7"/></svg></article>
+          <article class="metric"><div class="metric-label">CÔNG TY TUYỂN DỤNG</div><div id="companies-count" class="metric-value">—</div><span class="metric-delta warn">Đối tác & công ty</span><svg class="spark" viewBox="0 0 260 55" preserveAspectRatio="none"><path d="M0 11L33 26 66 18 100 39 130 15 165 35 195 7 225 29 260 47V55H0Z" fill="#f0b94a1c"/><path d="M0 11L33 26 66 18 100 39 130 15 165 35 195 7 225 29 260 47" fill="none" stroke="#e8ad38" stroke-width="1.7"/></svg></article>
+        </div>
+        <div class="grid-two"><section class="panel"><div class="panel-head"><span class="panel-title">Việc làm mới cập nhật</span><button class="btn small-btn" data-section="jobs">Xem tất cả</button></div><div class="table-wrap"><table><thead><tr><th>#</th><th>VỊ TRÍ</th><th>CÔNG TY</th><th>ĐỊA ĐIỂM</th><th>HẠN NỘP</th><th>TRẠNG THÁI</th></tr></thead><tbody id="recent-jobs"></tbody></table></div></section><section class="panel"><div class="panel-head"><span class="panel-title">Tình trạng việc làm</span></div><div class="line-chart"><svg viewBox="0 0 290 205" role="img" aria-label="Biểu đồ tình trạng việc làm"><g stroke="#ececf3" stroke-width="1"><path d="M25 18H280M25 62H280M25 106H280M25 150H280M25 194H280"/><path d="M25 18V194H280"/></g><path d="M25 166 C55 139 68 87 97 104 S137 184 164 162 S199 133 220 77 S253 42 280 22" fill="none" stroke="#5b61f2" stroke-width="2"/><path d="M25 160 L73 145 L120 131 L166 118 L220 99 L280 60" fill="none" stroke="#e94371" stroke-width="2"/><path d="M25 166 C55 139 68 87 97 104 S137 184 164 162 S199 133 220 77 S253 42 280 22V194H25Z" fill="#5b61f21c"/></svg><div class="chart-legend"><span><i class="legend-dot" style="background:#5b61f2"></i>Việc làm</span><span><i class="legend-dot" style="background:#e94371"></i>Đang hiển thị</span></div></div></section></div>
+        <div class="grid-three"><section class="panel"><div class="panel-head"><span class="panel-title">Tỷ lệ hiển thị</span></div><div class="donut-wrap"><div id="job-donut" class="donut"><div class="donut-inner"><strong id="active-rate">—</strong><span class="muted">đang mở</span></div></div></div><div class="chart-note">Xanh: đang hiển thị &nbsp;•&nbsp; Hồng: đã ẩn</div></section><section class="panel"><div class="panel-head"><span class="panel-title">Hoạt động hệ thống</span><span class="muted">Tổng quan</span></div><div class="bar-chart"><div class="bar-set"><i class="bar" style="height:65%"></i><i class="bar alt" style="height:20%"></i><i class="bar cyan" style="height:12%"></i><span class="bar-label">T1</span></div><div class="bar-set"><i class="bar" style="height:78%"></i><i class="bar alt" style="height:31%"></i><i class="bar cyan" style="height:18%"></i><span class="bar-label">T2</span></div><div class="bar-set"><i class="bar" style="height:92%"></i><i class="bar alt" style="height:45%"></i><i class="bar cyan" style="height:26%"></i><span class="bar-label">T3</span></div><div class="bar-set"><i class="bar" style="height:80%"></i><i class="bar alt" style="height:35%"></i><i class="bar cyan" style="height:20%"></i><span class="bar-label">T4</span></div></div></section><section class="panel"><div class="panel-head"><span class="panel-title">Chỉ số nhanh</span></div><div class="mini-list"><div class="mini-row"><span>Tài khoản đang hoạt động</span><strong id="quick-users">—</strong></div><div class="mini-row"><span>Việc làm đang mở</span><strong id="quick-active">—</strong></div><div class="mini-row"><span>Doanh nghiệp</span><strong id="quick-companies">—</strong></div><div class="mini-row"><span>Hồ sơ ứng viên</span><strong id="quick-profiles">—</strong></div></div></section></div>
+      </section>
+      <section id="users" class="section"><div class="page-heading"><div><h1>Quản lý tài khoản</h1><div class="breadcrumb">Quản trị &nbsp;›&nbsp; Tài khoản người dùng</div></div></div><div class="panel management"><div class="toolbar"><input id="user-query" class="search" placeholder="Tìm theo tên, email hoặc số điện thoại"><button id="search-users" class="btn"><i class="fa-solid fa-magnifying-glass"></i>Tìm kiếm</button></div><div class="table-wrap"><table><thead><tr><th>HỌ VÀ TÊN</th><th>EMAIL</th><th>SỐ ĐIỆN THOẠI</th><th>VAI TRÒ</th><th>TRẠNG THÁI</th><th></th></tr></thead><tbody id="users-table"></tbody></table></div></div><div class="panel management editor-source"><form id="user-form" class="form-grid"><input id="user-id" type="hidden"><label>Vai trò<select id="user-role"><option value="user">Ứng viên</option><option value="partner">Đối tác</option><option value="admin">Quản trị viên</option></select></label><label>Trạng thái<select id="user-active"><option value="true">Đang hoạt động</option><option value="false">Đã khóa</option></select></label><label>Công ty liên kết<select id="user-company"><option value="">Không liên kết</option></select></label><div class="wide"><button class="btn btn-primary" type="submit">Lưu thay đổi</button></div></form></div></section>
+      <section id="jobs" class="section"><div class="page-heading"><div><h1>Quản lý việc làm</h1><div class="breadcrumb">Quản trị &nbsp;›&nbsp; Việc làm</div></div></div><div class="panel management"><div class="toolbar"><input id="job-query" class="search" placeholder="Tìm theo vị trí, công ty hoặc địa điểm"><button id="search-jobs" class="btn"><i class="fa-solid fa-magnifying-glass"></i>Tìm kiếm</button></div><div class="table-wrap"><table><thead><tr><th>VỊ TRÍ</th><th>CÔNG TY</th><th>ĐỊA ĐIỂM</th><th>LƯƠNG</th><th>TRẠNG THÁI</th><th></th></tr></thead><tbody id="jobs-table"></tbody></table></div></div><div class="panel management editor-source"><form id="job-form" class="form-grid"><input id="job-id" type="hidden"><input id="job-category-id" type="hidden"><div class="form-section">Thông tin chung</div><label>Vị trí<input id="job-title" list="job-position-options" placeholder="Gõ để tìm hoặc nhập vị trí khác" required></label><label>Công ty<select id="job-company"></select></label><label>Hình thức làm việc<select id="job-type"><option value="">Chưa xác định</option><option value="Toàn thời gian">Toàn thời gian</option><option value="Bán thời gian">Bán thời gian</option><option value="Hợp đồng">Hợp đồng</option><option value="Thực tập">Thực tập</option><option value="Làm việc từ xa">Làm việc từ xa</option></select></label><label>Địa điểm<input id="job-location"></label><label>Mức lương<input id="job-salary" placeholder="Ví dụ: 15 - 20 triệu"></label><label>Kinh nghiệm<input id="job-experience"></label><label>Hạn nộp<input id="job-deadline" type="date"></label><label>Trạng thái<select id="job-active"><option value="true">Đang hiển thị</option><option value="false">Tạm ẩn</option></select></label><label class="wide">Liên kết tuyển dụng<input id="job-url" type="url"></label><div class="form-section">Nội dung tin tuyển dụng</div><label class="wide">Mô tả công việc<textarea id="job-description" rows="5" placeholder="Nêu nhiệm vụ, phạm vi công việc và mục tiêu vị trí."></textarea></label><label class="wide">Yêu cầu công việc<textarea id="job-requirements" rows="5" placeholder="Nêu kỹ năng, trình độ, kinh nghiệm hoặc chứng chỉ cần thiết."></textarea></label><label class="wide">Quyền lợi<textarea id="job-benefits" rows="4" placeholder="Nêu lương thưởng, bảo hiểm, đào tạo và các phúc lợi khác."></textarea></label><div class="wide"><button class="btn btn-primary" type="submit">Lưu việc làm</button></div></form></div></section>
+      <section id="companies" class="section"><div class="page-heading"><div><h1>Quản lý công ty</h1><div class="breadcrumb">Quản trị &nbsp;›&nbsp; Công ty</div></div><button id="new-company" class="btn btn-primary"><i class="fa-solid fa-plus"></i>Thêm công ty</button></div><div class="panel management"><div class="toolbar"><input id="company-query" class="search" placeholder="Tìm theo tên, ngành nghề hoặc địa điểm"><button id="search-companies" class="btn"><i class="fa-solid fa-magnifying-glass"></i>Tìm kiếm</button></div><div class="table-wrap"><table><thead><tr><th>TÊN CÔNG TY</th><th>NGÀNH NGHỀ</th><th>ĐỊA ĐIỂM</th><th>WEBSITE</th><th>ĐỐI TÁC</th><th></th></tr></thead><tbody id="companies-table"></tbody></table></div></div><div class="panel management editor-source"><form id="company-form" class="form-grid"><input id="company-id" type="hidden"><label>Tên công ty<input id="company-name" required></label><label>Website<input id="company-website" type="url"></label><label>Ngành nghề<input id="company-industry"></label><label>Quy mô<input id="company-size"></label><label>Địa điểm<input id="company-location"></label><label>Logo URL<input id="company-logo" type="url"></label><label>Loại tài khoản<select id="company-partner"><option value="false">Công ty thường</option><option value="true">Đối tác</option></select></label><label class="wide">Mô tả<textarea id="company-description" rows="3"></textarea></label><div class="wide"><button class="btn btn-primary" type="submit">Lưu công ty</button></div></form></div></section>
+    </div>
+  </main>
+  <dialog id="editor-modal"><div class="modal-head"><h2 id="editor-title">Cập nhật</h2><button id="editor-close" class="modal-close" type="button" aria-label="Đóng">×</button></div><div id="editor-body" class="modal-body"></div></dialog>
+  <script src="/static/js/auth.js?v=20260812-6"></script><script src="/static/js/job_positions.js?v=20260903-4"></script>
+  <script>
+    (() => {
+      const state = { users: [], jobs: [], companies: [] };
+      const el = id => document.getElementById(id);
+      el('job-deadline').min = new Date().toISOString().slice(0, 10);
+      window.mountJobPositionOptions();
+      const editorModal = el('editor-modal'), editorBody = el('editor-body');
+      const editorSources = new Map(['user-form', 'job-form', 'company-form'].map(id => [id, el(id).parentElement]));
+      function openEditor(formId, title) { const form = el(formId); el('editor-title').textContent = title; editorBody.appendChild(form); editorModal.showModal(); setTimeout(() => form.querySelector('input:not([type="hidden"]), select, textarea')?.focus(), 0); }
+      function closeEditor() { if (!editorModal.open) return; const form = editorBody.querySelector('form'); if (form) editorSources.get(form.id).appendChild(form); editorModal.close(); }
+      const esc = value => String(value ?? '').replace(/[&<>"']/g, c => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' })[c]);
+      const showNotice = (message, error = false) => { const n = el('notice'); n.textContent = message; n.className = 'notice' + (error ? ' error' : ''); n.style.display = 'block'; window.scrollTo({ top: 0, behavior: 'smooth' }); setTimeout(() => n.style.display = 'none', 4500); };
+      async function api(path, options = {}) { const token = localStorage.getItem('job_portal_token'); const res = await fetch('/api/admin' + path, { ...options, headers: { 'Content-Type':'application/json', Authorization: 'Bearer ' + token, ...(options.headers || {}) } }); if (res.status === 401 || res.status === 403) { location.href = '/static/login.html?next=/static/admin.html'; throw new Error('Bạn cần đăng nhập bằng tài khoản quản trị.'); } const data = await res.json(); if (!res.ok) throw new Error(data.detail || 'Không thể thực hiện yêu cầu.'); return data; }
+      function date(value) { return value ? new Date(value).toLocaleDateString('vi-VN') : '—'; }
+      function setSection(name) { document.querySelectorAll('.section').forEach(x => x.classList.toggle('active', x.id === name)); document.querySelectorAll('[data-section]').forEach(x => x.classList.toggle('active', x.dataset.section === name && x.classList.contains('menu-link'))); window.scrollTo({top:0, behavior:'smooth'}); }
+      function fillOverview(summary) { el('users-count').textContent = summary.users; el('jobs-count').textContent = summary.jobs; el('active-jobs-count').textContent = summary.active_jobs; el('companies-count').textContent = summary.companies; el('quick-users').textContent = summary.users; el('quick-active').textContent = summary.active_jobs; el('quick-companies').textContent = summary.companies; el('quick-profiles').textContent = summary.users; const rate = summary.jobs ? Math.round(summary.active_jobs * 100 / summary.jobs) : 0; el('active-rate').textContent = rate + '%'; el('job-donut').style.background = `conic-gradient(var(--blue) 0 ${rate}%, var(--pink) ${rate}% 100%)`; }
+      function fillCompanies() { const options = state.companies.map(c => `<option value="${c.id}">${esc(c.name)}</option>`).join(''); el('job-company').innerHTML = '<option value="">Chưa chọn công ty</option>' + options; el('user-company').innerHTML = '<option value="">Không liên kết</option>' + options; el('companies-table').innerHTML = state.companies.length ? state.companies.map(c => `<tr><td class="job-name">${esc(c.name)}</td><td>${esc(c.industry || '—')}</td><td>${esc(c.location || '—')}</td><td>${c.website ? `<a href="${esc(c.website)}" target="_blank" rel="noopener">Website</a>` : '—'}</td><td>${c.is_partner ? 'Có' : 'Không'}</td><td><button class="btn small-btn edit-company" data-id="${c.id}">Sửa</button></td></tr>`).join('') : '<tr><td colspan="6" class="empty">Chưa có công ty.</td></tr>'; }
+      function fillUsers() { el('users-table').innerHTML = state.users.length ? state.users.map(u => `<tr><td class="job-name">${esc(u.full_name || '—')}</td><td>${esc(u.email)}</td><td>${esc(u.phone_number || '—')}</td><td>${esc(u.role || 'user')}</td><td><span class="status ${u.is_active ? '' : 'off'}">${u.is_active ? 'Hoạt động' : 'Đã khóa'}</span></td><td><button class="btn small-btn edit-user" data-id="${u.id}">Sửa</button></td></tr>`).join('') : '<tr><td colspan="6" class="empty">Không tìm thấy tài khoản.</td></tr>'; }
+      function fillJobs() { const rows = state.jobs.map((j, i) => `<tr><td>${i + 1}</td><td class="job-name">${esc(j.title)}</td><td>${esc(j.company_name || '—')}</td><td>${esc(j.location || '—')}</td><td>${date(j.deadline)}</td><td><span class="status ${j.is_active ? '' : 'off'}">${j.is_active ? 'Hiển thị' : 'Tạm ẩn'}</span></td></tr>`).join(''); el('recent-jobs').innerHTML = rows || '<tr><td colspan="6" class="empty">Chưa có việc làm.</td></tr>'; el('jobs-table').innerHTML = state.jobs.length ? state.jobs.map(j => `<tr><td class="job-name">${esc(j.title)}</td><td>${esc(j.company_name || '—')}</td><td>${esc(j.location || '—')}</td><td>${esc(j.salary || '—')}</td><td><span class="status ${j.is_active ? '' : 'off'}">${j.is_active ? 'Hiển thị' : 'Tạm ẩn'}</span></td><td><button class="btn small-btn edit-job" data-id="${j.id}">Sửa</button></td></tr>`).join('') : '<tr><td colspan="6" class="empty">Không tìm thấy việc làm.</td></tr>'; }
+      async function loadAll() { try { const [summary, users, jobs, companies] = await Promise.all([api('/summary'), api('/users?limit=200'), api('/jobs?limit=200'), api('/companies?limit=200')]); state.users = users; state.jobs = jobs; state.companies = companies; fillOverview(summary); fillUsers(); fillJobs(); fillCompanies(); } catch (err) { showNotice(err.message, true); } }
+      async function search(kind) { try { const query = el(kind + '-query').value.trim(); state[kind === 'company' ? 'companies' : kind === 'job' ? 'jobs' : 'users'] = await api('/' + (kind === 'company' ? 'companies' : kind === 'job' ? 'jobs' : 'users') + '?limit=200&query=' + encodeURIComponent(query)); if (kind === 'company') fillCompanies(); else if (kind === 'job') fillJobs(); else fillUsers(); } catch(err) { showNotice(err.message, true); } }
+      document.querySelectorAll('[data-section]').forEach(b => b.addEventListener('click', () => setSection(b.dataset.section)));
+      el('editor-close').onclick = closeEditor;
+      editorModal.addEventListener('click', event => { if (event.target === editorModal) closeEditor(); });
+      el('search-users').onclick = () => search('user'); el('search-jobs').onclick = () => search('job'); el('search-companies').onclick = () => search('company');
+      document.addEventListener('click', event => { const id = Number(event.target.dataset.id); if (!id) return; if (event.target.classList.contains('edit-user')) { const u = state.users.find(x => x.id === id); el('user-id').value = id; el('user-role').value = u.role || 'user'; el('user-active').value = String(!!u.is_active); el('user-company').value = u.company_id || ''; openEditor('user-form', 'Cập nhật tài khoản'); } if (event.target.classList.contains('edit-job')) { const j = state.jobs.find(x => x.id === id); el('job-id').value=id; el('job-category-id').value=j.category_id || ''; el('job-title').value=j.title || ''; el('job-company').value=j.company_id || ''; el('job-type').value=j.job_type || ''; el('job-location').value=j.location || ''; el('job-salary').value=j.salary || ''; el('job-experience').value=j.experience || ''; el('job-deadline').value=(j.deadline || '').slice(0,10); el('job-url').value=j.job_url || ''; el('job-description').value=j.description || ''; el('job-requirements').value=j.requirements || ''; el('job-benefits').value=j.benefits || ''; el('job-active').value=String(!!j.is_active); openEditor('job-form', 'Cập nhật việc làm'); } if (event.target.classList.contains('edit-company')) { const c = state.companies.find(x => x.id === id); el('company-id').value=id; el('company-name').value=c.name || ''; el('company-website').value=c.website || ''; el('company-industry').value=c.industry || ''; el('company-size').value=c.size || ''; el('company-location').value=c.location || ''; el('company-logo').value=c.logo_url || ''; el('company-description').value=c.description || ''; el('company-partner').value=String(!!c.is_partner); openEditor('company-form', 'Cập nhật công ty'); } });
+      el('user-form').addEventListener('submit', async e => { e.preventDefault(); const id = el('user-id').value; if (!id) return showNotice('Hãy chọn một tài khoản cần cập nhật.', true); const companyId = Number(el('user-company').value) || null; if (el('user-role').value === 'partner' && !companyId) return showNotice('Tài khoản đối tác cần liên kết một công ty.', true); try { await api('/users/' + id, {method:'PUT', body:JSON.stringify({role:el('user-role').value, is_active:el('user-active').value === 'true', company_id:companyId})}); closeEditor(); showNotice('Đã cập nhật tài khoản.'); loadAll(); } catch(err) { showNotice(err.message, true); } });
+      el('job-form').addEventListener('submit', async e => { e.preventDefault(); const id = el('job-id').value; if (!id) return showNotice('Hãy chọn một việc làm cần cập nhật.', true); const val = id => el(id).value.trim(); try { await api('/jobs/' + id, {method:'PUT', body:JSON.stringify({title:val('job-title'), company_id: Number(val('job-company')) || null, category_id:Number(val('job-category-id')) || null, job_type:val('job-type') || null, location:val('job-location') || null, salary:val('job-salary') || null, experience:val('job-experience') || null, deadline:val('job-deadline') || null, job_url:val('job-url') || null, description:val('job-description') || null, requirements:val('job-requirements') || null, benefits:val('job-benefits') || null, is_active:el('job-active').value === 'true'})}); closeEditor(); showNotice('Đã cập nhật việc làm.'); loadAll(); } catch(err) { showNotice(err.message, true); } });
+      const resetCompany = () => el('company-form').reset(); el('new-company').onclick = () => { resetCompany(); el('company-id').value=''; openEditor('company-form', 'Thêm công ty'); };
+      el('company-form').addEventListener('submit', async e => { e.preventDefault(); const val=id => el(id).value.trim(); const payload={name:val('company-name'),website:val('company-website')||null,industry:val('company-industry')||null,size:val('company-size')||null,location:val('company-location')||null,logo_url:val('company-logo')||null,description:val('company-description')||null,is_partner:el('company-partner').value === 'true'}; try { const id=el('company-id').value; await api('/companies' + (id ? '/' + id : ''), {method:id?'PUT':'POST',body:JSON.stringify(payload)}); closeEditor(); showNotice(id ? 'Đã cập nhật công ty.' : 'Đã thêm công ty.'); resetCompany(); loadAll(); } catch(err) { showNotice(err.message,true); } });
+      el('logout').onclick = () => { if (window.Auth && window.Auth.logout) window.Auth.logout(); else { localStorage.removeItem('job_portal_token'); location.href='/static/login.html'; } };
+      const account = window.Auth && window.Auth.getUser ? window.Auth.getUser() : null; if (account) { const name = account.name || account.full_name || account.email || 'Quản trị viên'; el('admin-user').innerHTML = `<span class="avatar">${esc(name).slice(0,2).toUpperCase()}</span>${esc(name)}`; }
+      loadAll();
+    })();
+  </script>
+</body>
+</html>

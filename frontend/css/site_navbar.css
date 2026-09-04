@@ -1,0 +1,8 @@
+/* Shared public navigation for Job4U pages. */
+#site-navbar .navbar-brand h1 { font-size: 2rem; }
+#site-navbar .nav-item { font-weight: 500; }
+#site-navbar .nav-item.active { color: var(--bs-primary, #00b074) !important; }
+@media (max-width: 991.98px) {
+  #site-navbar .navbar-nav { border-top: 1px solid #edf0ee; }
+  #site-navbar #nav-auth-area { padding: 0 1.5rem 1rem; }
+}

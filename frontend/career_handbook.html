@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Cẩm nang nghề nghiệp | Job4U</title>
+  <meta name="description" content="Kiến thức nghề nghiệp, bí kíp tìm việc và xu hướng tuyển dụng từ Job4U.">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+  <link href="/static/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/static/css/style_jobtop.css" rel="stylesheet">
+  <link href="/static/css/site_navbar.css?v=20260903-2" rel="stylesheet">
+  <style>
+    body{font-family:Inter;background:#f5f8f6;color:#19372d}.hero{background:linear-gradient(120deg,#08734f,#00a76d);color:#fff;padding:68px 0 94px}.hero h1{font-weight:800}.search-box{margin-top:-32px}.search-card,.guide-card{border:0;border-radius:16px;box-shadow:0 8px 26px #173b3214}.category{border:1px solid #d7e8df;background:#fff;border-radius:99px;padding:8px 13px;color:#397060;font-size:13px;white-space:nowrap}.category.active,.category:hover{background:#00a76d;border-color:#00a76d;color:#fff}.guide-card{overflow:hidden;height:100%;background:#fff}.guide-image{height:170px;width:100%;object-fit:cover;background:#e7f5ee}.guide-body{padding:18px}.guide-meta{font-size:12px;color:#71887d}.guide-title{color:#183b2f;text-decoration:none;font-size:17px;font-weight:800;line-height:1.45}.guide-title:hover{color:#00a76d}.guide-summary{font-size:13px;color:#627970;line-height:1.65}.empty{padding:58px;text-align:center;color:#71887d}@media(max-width:576px){.hero{padding:45px 0 70px}}
+  </style>
+</head>
+<body>
+  <div id="site-navbar"></div>
+  <header class="hero"><div class="container text-center"><p class="text-uppercase small fw-bold opacity-75">Career handbook</p><h1>Cẩm nang nghề nghiệp</h1><p class="mb-0 opacity-75">Kiến thức thực tế để bạn tự tin phát triển sự nghiệp.</p></div></header>
+  <main class="container pb-5"><section class="search-box"><div class="search-card bg-white p-3 p-md-4"><div class="input-group"><span class="input-group-text bg-white border-end-0"><i class="fa fa-search text-success"></i></span><input id="query" class="form-control border-start-0" placeholder="Tìm kỹ năng, CV, phỏng vấn hoặc ngành nghề..."><button id="search" class="btn btn-success px-4">Tìm kiếm</button></div><div id="categories" class="d-flex gap-2 overflow-auto mt-3 pb-1"></div></div></section><section class="d-flex justify-content-between align-items-center mt-5 mb-3"><div><h2 class="h4 fw-bold mb-1">Bài viết mới nhất</h2><p id="result-label" class="small text-muted mb-0"></p></div></section><div id="guides" class="row g-4"></div><div class="text-center mt-4"><button id="more" class="btn btn-outline-success d-none">Xem thêm bài viết</button></div></main>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script><script src="/static/js/site_navbar.js?v=20260903-2"></script><script src="/static/js/auth.js?v=20260904-1"></script>
+  <script>
+    const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+    const placeholder='data:image/svg+xml,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="700" height="400"><rect width="100%" height="100%" fill="#e7f5ee"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="#16845d" font-family="Arial" font-size="30">Job4U Career Handbook</text></svg>');
+    let page=1,total=0,category='';
+    async function load(reset=false){if(reset){page=1;guides.innerHTML=''}const r=await fetch('/api/career-guides?'+new URLSearchParams({query:query.value.trim(),category,page,page_size:9})),d=await r.json();total=d.total;result-label.textContent=`${total} bài viết hữu ích`;guides.insertAdjacentHTML('beforeend',d.items.map(g=>`<article class="col-md-6 col-lg-4"><div class="guide-card"><img class="guide-image" src="${esc(g.thumbnail_url||placeholder)}" alt="" onerror="this.src='${placeholder}'"><div class="guide-body"><div class="guide-meta mb-2">${esc(g.category.name)} · ${new Date(g.created_at).toLocaleDateString('vi-VN')}</div><a class="guide-title d-block" href="/static/career_guide_detail.html?slug=${encodeURIComponent(g.slug)}">${esc(g.title)}</a><p class="guide-summary mt-2 mb-3">${esc(g.summary)}</p><div class="guide-meta"><i class="fa fa-user me-1"></i>${esc(g.author)}<span class="float-end"><i class="fa fa-eye me-1"></i>${g.view_count}</span></div></div></div></article>`).join('')||'<div class="empty">Chưa có bài viết phù hợp.</div>');more.classList.toggle('d-none',page*d.page_size>=total)}
+    async function init(){const c=await (await fetch('/api/career-guides/categories')).json();categories.innerHTML='<button class="category active" data-slug="">Tất cả</button>'+c.map(x=>`<button class="category" data-slug="${esc(x.slug)}">${esc(x.name)}</button>`).join('');categories.onclick=e=>{const b=e.target.closest('[data-slug]');if(!b)return;category=b.dataset.slug;document.querySelectorAll('.category').forEach(x=>x.classList.toggle('active',x===b));load(true)};search.onclick=()=>load(true);query.onkeydown=e=>{if(e.key==='Enter')load(true)};more.onclick=()=>{page++;load()};load()}
+    init();
+  </script>
+</body></html>

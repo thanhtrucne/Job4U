@@ -12,7 +12,7 @@
           <a href="/" class="nav-item nav-link ${active('/') || active('/static/index.html') ? 'active' : ''}">Trang chủ</a>
           <a href="/static/jobs.html" class="nav-item nav-link ${active('/static/jobs.html') ? 'active' : ''}">Việc làm</a>
           <a id="digital-profile-nav" href="/static/cv_match.html" class="nav-item nav-link d-none ${active('/static/cv_match.html') ? 'active' : ''}">Hồ sơ việc làm số</a>
-          <a href="/static/career_handbook.html" class="nav-item nav-link ${active('/static/career_handbook.html') || active('/static/career_guide_detail.html') ? 'active' : ''}">Cẩm nang nghề nghiệp</a>
+          <a href="/static/career_handbook.html" class="nav-item nav-link ${active('/static/career_handbook.html') || active('/static/career_guide_detail.html') ? 'active' : ''}">Tin tức</a>
           <a href="/static/register_company.html" class="nav-item nav-link ${active('/static/register_company.html') ? 'active' : ''}">Dành cho doanh nghiệp</a>
         </div>
         <div id="nav-auth-area" class="d-flex gap-2 me-3 mb-3 mb-lg-0">

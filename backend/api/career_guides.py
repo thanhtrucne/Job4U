@@ -3,7 +3,8 @@ import re
 from datetime import datetime, timezone
 from typing import Literal
 
-from fastapi import APIRouter, Depends, HTTPException, Query
+from fastapi import APIRouter, Depends, File, HTTPException, Query, UploadFile
+from fastapi.responses import Response
 from pydantic import BaseModel, Field, field_validator
 from sqlalchemy import func, or_, select
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -12,6 +13,7 @@ from sqlalchemy.orm import selectinload
 from backend.api.auth import get_current_user, require_roles
 from backend.database import get_db
 from backend.models import CareerGuide, CareerGuideCategory, SavedCareerGuide, User
+from backend.services.object_storage import read_career_image, upload_career_image
 
 router = APIRouter(prefix="/career-guides", tags=["career-handbook"])
 admin_router = APIRouter(prefix="/admin/career-guides", tags=["admin", "career-handbook"])
@@ -45,6 +47,13 @@ class CategoryInput(BaseModel):
 async def categories(db: AsyncSession = Depends(get_db)):
     rows=(await db.execute(select(CareerGuideCategory).order_by(CareerGuideCategory.id))).scalars().all()
     return [{"id":row.id,"name":row.name,"slug":row.slug,"description":row.description} for row in rows]
+
+@router.get("/media/{filename}")
+async def career_image(filename: str):
+    if not re.fullmatch(r"[0-9a-f-]{36}\.(jpg|jpeg|png|webp|gif)", filename, re.I): raise HTTPException(404, "Không tìm thấy ảnh.")
+    try: content, media_type = read_career_image(filename)
+    except Exception: raise HTTPException(404, "Không tìm thấy ảnh.")
+    return Response(content, media_type=media_type or "image/jpeg", headers={"Cache-Control":"public, max-age=86400"})
 
 @router.get("")
 async def list_guides(query: str = Query("", max_length=150), category: str = Query("", max_length=180), page: int = Query(1, ge=1), page_size: int = Query(9, ge=1, le=24), db: AsyncSession = Depends(get_db)):
@@ -81,6 +90,14 @@ async def admin_list(_:User=Depends(require_roles("admin")),db:AsyncSession=Depe
     counts=dict((await db.execute(select(SavedCareerGuide.career_guide_id,func.count()).group_by(SavedCareerGuide.career_guide_id))).all())
     for row in rows: row.save_count=counts.get(row.id,0)
     return [item(row) for row in rows]
+
+@admin_router.post("/images", status_code=201)
+async def upload_image(file: UploadFile = File(...), _: User = Depends(require_roles("admin"))):
+    if not file.filename or file.content_type not in {"image/jpeg", "image/png", "image/webp", "image/gif"}: raise HTTPException(422, "Chỉ chấp nhận ảnh JPG, PNG, WEBP hoặc GIF.")
+    content = await file.read()
+    if not content or len(content) > 5 * 1024 * 1024: raise HTTPException(413, "Ảnh phải nhỏ hơn hoặc bằng 5 MB.")
+    key = upload_career_image(file.filename, content, file.content_type)
+    return {"thumbnail_url": "/api/career-guides/media/" + key.rsplit('/', 1)[-1]}
 
 @admin_router.post("",status_code=201)
 async def create(payload:GuideInput,admin:User=Depends(require_roles("admin")),db:AsyncSession=Depends(get_db)):

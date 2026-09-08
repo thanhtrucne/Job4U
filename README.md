@@ -1,3 +1,3 @@
 # Smart Job Portal
 
-Website giới thiệu việc làm cho Trung tâm Dịch vụ việc làm TP.HCM. Crawler TopCV/VietnamWorks được giữ nguyên; hồ sơ ứng viên là dữ liệu có cấu trúc.
+Website giới thiệu việc làm cho Trung tâm Dịch vụ việc làm TP.HCM.
